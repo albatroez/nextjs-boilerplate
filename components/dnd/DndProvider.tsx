@@ -1,4 +1,10 @@
-import { closestCenter, DndContext, DragEndEvent, SensorDescriptor, SensorOptions } from "@dnd-kit/core";
+import {
+    closestCenter,
+    DndContext,
+    DragEndEvent,
+    SensorDescriptor,
+    SensorOptions,
+} from "@dnd-kit/core";
 import {
     SortableContext,
     verticalListSortingStrategy,
@@ -9,10 +15,15 @@ import { MenuItem } from "@/app/page";
 type Props = {
     sensors: SensorDescriptor<SensorOptions>[];
     handleDragEnd: (event: DragEndEvent) => void;
-    items: MenuItem[]
-}
+    items: MenuItem[];
+};
 
-export default function DndProvider({ sensors, handleDragEnd, items, children }: PropsWithChildren<Props>) {
+export default function DndProvider({
+    sensors,
+    handleDragEnd,
+    items,
+    children,
+}: PropsWithChildren<Props>) {
     return (
         <DndContext
             sensors={sensors}

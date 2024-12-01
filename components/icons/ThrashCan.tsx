@@ -1,4 +1,4 @@
-export default function ThrashCan({ onClick }) {
+export default function ThrashCan({ onClick }: { onClick: () => void }) {
     return (
         <div className={"p-1 cursor-pointer"} onClick={onClick}>
             <svg

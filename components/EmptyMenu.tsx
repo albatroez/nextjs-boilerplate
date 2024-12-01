@@ -1,14 +1,19 @@
-"use client";
 import { useState } from "react";
 import MenuItemForm from "@/components/MenuItemForm";
 import AddCircle from "@/components/icons/AddCircle";
+import { AddItem } from "@/app/page";
 
-export default function EmptyMenu({ addItem }) {
+export default function EmptyMenu({ addItem }: { addItem: AddItem }) {
     const [isAdding, setIsAdding] = useState(false);
     const goBack = () => setIsAdding(false);
 
     return isAdding ?
-            <MenuItemForm onCancel={goBack} onSubmit={addItem}></MenuItemForm>
+            <MenuItemForm
+                onCancel={goBack}
+                onDelete={goBack}
+                onSubmit={addItem}
+                isEditing={false}
+            ></MenuItemForm>
         :   <section
                 className={
                     "grid justify-items-center p-4 bg-zinc-100 rounded-lg"
@@ -22,7 +27,7 @@ export default function EmptyMenu({ addItem }) {
                     className="flex items-center gap-1 border text-white rounded-lg p-2 mt-4 bg-droplo-purple font-bold"
                     onClick={() => setIsAdding(true)}
                 >
-                    <AddCircle/>
+                    <AddCircle />
                     Dodaj pozycję menu
                 </button>
             </section>;

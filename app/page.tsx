@@ -5,39 +5,25 @@ import { useState } from "react";
 import ItemList from "@/components/ItemList";
 import MenuItemForm, { FormData } from "@/components/MenuItemForm";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
-import DndProvider from "@/components/DndProvider";
+import DndProvider from "@/components/dnd/DndProvider";
 
 export type MenuItem = FormData & { id: number };
-//
-// type Item = {
-//     isEditing: boolean;
-//     isAdding: boolean;
-//     subItems?: Item[]
-// } & MenuItem
-// type State = {
-//     items: Item[]
-// }
-//
-// function itemsReducer(state: State, action) {
-//     switch (action.type) {
-//         case 'edit': {
-//             return state.items.
-//         }
-//     }
-// }
+export type RemoveItem = (id: number) => void;
+export type EditItem = (updatedItem: MenuItem) => void;
+export type AddItem = (item: MenuItem) => void;
 
 export default function Home() {
     const [isAdding, setIsAdding] = useState(false);
     const [items, setItems] = useState<MenuItem[]>([]);
     const { sensors, handleDragEnd } = useDragAndDrop(setItems);
-    const addItem = (item: FormData, id: number) => {
-        setItems((prevState) => [...prevState, { ...item, id }]);
+    const addItem: AddItem = (item) => {
+        setItems((prevState) => [...prevState, item]);
         setIsAdding(false);
     };
-    const removeItem = (id: number) =>
+    const removeItem: RemoveItem = (id) =>
         setItems((prevState) => prevState.filter((item) => item.id !== id));
 
-    const editItem = (updatedItem: MenuItem) => {
+    const editItem: EditItem = (updatedItem) => {
         setItems((items) =>
             items.map((item) => {
                 if (updatedItem.id === item.id) {
@@ -57,7 +43,6 @@ export default function Home() {
                 >
                     <ItemList
                         items={items}
-                        // addItem={addItem}
                         removeItem={removeItem}
                         editItem={editItem}
                         isRoot={true}
@@ -70,10 +55,12 @@ export default function Home() {
                     </button>
                     {isAdding && (
                         <div className={"m-2"}>
-                        <MenuItemForm
-                            onCancel={() => setIsAdding(false)}
-                            onSubmit={addItem}
-                        />
+                            <MenuItemForm
+                                onCancel={() => setIsAdding(false)}
+                                onDelete={() => setIsAdding(false)}
+                                onSubmit={addItem}
+                                isEditing={false}
+                            />
                         </div>
                     )}
                 </DndProvider>

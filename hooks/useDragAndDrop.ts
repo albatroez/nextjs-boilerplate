@@ -1,7 +1,17 @@
-import { KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    UniqueIdentifier,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import type { Dispatch, SetStateAction } from "react";
 
-export function useDragAndDrop(setItems) {
+export function useDragAndDrop<T extends { id: UniqueIdentifier }>(
+    setItems: Dispatch<SetStateAction<T[]>>
+) {
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -9,20 +19,22 @@ export function useDragAndDrop(setItems) {
         })
     );
 
-    function handleDragEnd(event) {
+    function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event;
 
-        if (active.id !== over.id) {
+        if (active.id !== over?.id) {
             setItems((items) => {
                 const oldIndex = items.findIndex(
                     (item) => item.id === active.id
                 );
-                const newIndex = items.findIndex((item) => item.id === over.id);
+                const newIndex = items.findIndex(
+                    (item) => item.id === over?.id
+                );
 
                 return arrayMove(items, oldIndex, newIndex);
             });
         }
     }
 
-    return {sensors, handleDragEnd}
+    return { sensors, handleDragEnd };
 }
