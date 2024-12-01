@@ -13,7 +13,15 @@ export default function Home() {
         setItems((prevState) => [...prevState, { ...item, id }]);
     const removeItem = (id: number) => setItems((prevState) => prevState.filter((item) => item.id !== id))
 
+    const editItem = (updatedItem: MenuItem) =>
+        setItems((items) => items.map((item) => {
+            if (updatedItem.id === item.id) {
+                return updatedItem
+            }
+            return item;
+        }))
+
     return items.length > 0 ?
-            <ItemList items={items} addItem={addItem} removeItem={removeItem} isRoot={true} />
+            <ItemList items={items} addItem={addItem} removeItem={removeItem} editItem={editItem} isRoot={true} />
         :   <EmptyMenu addItem={addItem} />;
 }

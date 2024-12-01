@@ -1,5 +1,7 @@
+"use client"
 import { SubmitHandler, useForm } from "react-hook-form";
 import ThrashCan from "@/components/icons/ThrashCan";
+import { useEffect } from "react";
 
 export type FormData = {
     label: string;
@@ -7,17 +9,27 @@ export type FormData = {
 };
 
 let id = 0;
+
 function getId() {
     return id++;
 }
 
-export default function MenuItemForm({ onCancel, onSubmit }) {
+export default function MenuItemForm({ onCancel, onSubmit, isEditing, item = {} }) {
     const {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm<FormData>();
-    const onFormSubmit: SubmitHandler<FormData> = (data) => onSubmit(data, getId())
+    const onFormSubmit: SubmitHandler<FormData> = (data) =>
+        isEditing ? onSubmit({ ...data, id: item.id }) : onSubmit(data, getId());
+
+    useEffect(() => {
+        if (isEditing) {
+            setValue("label", item.label);
+            setValue("url", item.url);
+        }
+    }, [isEditing, item.label, item.url, setValue]);
 
     return (
         <form
