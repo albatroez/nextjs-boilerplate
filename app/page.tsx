@@ -4,12 +4,32 @@ import EmptyMenu from "@/components/EmptyMenu";
 import { useState } from "react";
 import ItemList from "@/components/ItemList";
 import MenuItemForm, { FormData } from "@/components/MenuItemForm";
+import { useDragAndDrop } from "@/hooks/useDragAndDrop";
+import DndProvider from "@/components/DndProvider";
 
 export type MenuItem = FormData & { id: number };
+//
+// type Item = {
+//     isEditing: boolean;
+//     isAdding: boolean;
+//     subItems?: Item[]
+// } & MenuItem
+// type State = {
+//     items: Item[]
+// }
+//
+// function itemsReducer(state: State, action) {
+//     switch (action.type) {
+//         case 'edit': {
+//             return state.items.
+//         }
+//     }
+// }
 
 export default function Home() {
     const [isAdding, setIsAdding] = useState(false);
     const [items, setItems] = useState<MenuItem[]>([]);
+    const { sensors, handleDragEnd } = useDragAndDrop(setItems);
     const addItem = (item: FormData, id: number) => {
         setItems((prevState) => [...prevState, { ...item, id }]);
         setIsAdding(false);
@@ -26,26 +46,34 @@ export default function Home() {
                 return item;
             })
         );
-    }
+    };
 
     return items.length > 0 ?
             <div>
-                <ItemList
+                <DndProvider
+                    sensors={sensors}
+                    handleDragEnd={handleDragEnd}
                     items={items}
-                    // addItem={addItem}
-                    removeItem={removeItem}
-                    editItem={editItem}
-                    isRoot={true}
-                />
-                <button onClick={() => setIsAdding((prevState) => !prevState)}>
-                    Dodaj pozycję menu
-                </button>
-                {isAdding && (
-                    <MenuItemForm
-                        onCancel={() => setIsAdding(false)}
-                        onSubmit={addItem}
+                >
+                    <ItemList
+                        items={items}
+                        // addItem={addItem}
+                        removeItem={removeItem}
+                        editItem={editItem}
+                        isRoot={true}
                     />
-                )}
+                    <button
+                        onClick={() => setIsAdding((prevState) => !prevState)}
+                    >
+                        Dodaj pozycję menu
+                    </button>
+                    {isAdding && (
+                        <MenuItemForm
+                            onCancel={() => setIsAdding(false)}
+                            onSubmit={addItem}
+                        />
+                    )}
+                </DndProvider>
             </div>
         :   <EmptyMenu addItem={addItem} />;
 }

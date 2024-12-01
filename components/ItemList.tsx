@@ -3,6 +3,10 @@ import { useState } from "react";
 import MenuItemForm, { FormData } from "@/components/MenuItemForm";
 import Drag from "@/components/icons/Drag";
 import { MenuItem } from "@/app/page";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useDragAndDrop } from "@/hooks/useDragAndDrop";
+import DndProvider from "@/components/DndProvider";
 
 function Actions({ onClickAdd, onClickDelete, onClickEdit }) {
     return (
@@ -16,10 +20,33 @@ function Actions({ onClickAdd, onClickDelete, onClickEdit }) {
     );
 }
 
-function Item({ item, removeItem, editItem }) {
+function SortableItem({ item, removeItem, editItem }) {
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({ id: item.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style}>
+            <Item
+                item={item}
+                removeItem={removeItem}
+                editItem={editItem}
+                {...attributes}
+                {...listeners}
+            />
+        </div>
+    );
+}
+
+function Item({ item, removeItem, editItem, ...rest }) {
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [subItems, setSubItems] = useState<MenuItem[]>([]);
+    const { sensors, handleDragEnd } = useDragAndDrop(setSubItems);
     const addSubItem = (item: FormData, id: number) => {
         setSubItems((prevState) => [...prevState, { ...item, id }]);
         setIsAdding(false);
@@ -39,8 +66,8 @@ function Item({ item, removeItem, editItem }) {
 
     const editItemAndResetForm = (updatedItem) => {
         editItem(updatedItem);
-        setIsEditing(false)
-    }
+        setIsEditing(false);
+    };
 
     return (
         <section className="border">
@@ -52,7 +79,7 @@ function Item({ item, removeItem, editItem }) {
                     isEditing={isEditing}
                 />
             :   <div className="flex">
-                    <Drag />
+                    <Drag {...rest} />
                     <div>
                         <p>{item.label}</p>
                         <p>{item.url}</p>
@@ -64,12 +91,19 @@ function Item({ item, removeItem, editItem }) {
                     />
                 </div>
             }
-            <ItemList
+            <DndProvider
+                sensors={sensors}
+                handleDragEnd={handleDragEnd}
                 items={subItems}
-                addItem={addSubItem}
-                removeItem={removeSubItem}
-                editItem={editSubItem}
-            />
+            >
+                <ItemList
+                    items={subItems}
+                    addItem={addSubItem}
+                    removeItem={removeSubItem}
+                    editItem={editSubItem}
+                    isEditingFromParent={isEditing}
+                />
+            </DndProvider>
             {isAdding && (
                 <MenuItemForm
                     onCancel={() => setIsAdding(false)}
@@ -84,12 +118,13 @@ export default function ItemList({
     items,
     removeItem,
     editItem,
+    isEditingFromParent = false,
     isRoot = false,
 }) {
     return (
         <div className={isRoot ? "" : "ml-2"}>
             {items.map((item) => (
-                <Item
+                <SortableItem
                     key={item.id}
                     item={item}
                     removeItem={removeItem}
