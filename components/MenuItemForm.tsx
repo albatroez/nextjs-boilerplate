@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ThrashCan from "@/components/icons/ThrashCan";
 import { useEffect } from "react";
@@ -14,7 +14,13 @@ function getId() {
     return id++;
 }
 
-export default function MenuItemForm({ onCancel, onSubmit, isEditing, item = {} }) {
+export default function MenuItemForm({
+    onCancel,
+    onSubmit,
+    onDelete,
+    isEditing,
+    item = {},
+}) {
     const {
         register,
         handleSubmit,
@@ -22,7 +28,9 @@ export default function MenuItemForm({ onCancel, onSubmit, isEditing, item = {} 
         setValue,
     } = useForm<FormData>();
     const onFormSubmit: SubmitHandler<FormData> = (data) =>
-        isEditing ? onSubmit({ ...data, id: item.id }) : onSubmit(data, getId());
+        isEditing ?
+            onSubmit({ ...data, id: item.id })
+        :   onSubmit(data, getId());
 
     useEffect(() => {
         if (isEditing) {
@@ -33,40 +41,72 @@ export default function MenuItemForm({ onCancel, onSubmit, isEditing, item = {} 
 
     return (
         <form
-            className={"grid grid-cols-menu-item gap-2 p-4"}
+            className={
+                "grid grid-cols-menu-item gap-2 p-4 border rounded-lg bg-white"
+            }
             onSubmit={handleSubmit(onFormSubmit)}
         >
             <div>
-                <label htmlFor={"label"}>Nazwa</label>
-                {errors.label && <span>Nazwa jest wymagana</span>}
+                <label htmlFor={"label"}>
+                    Nazwa<span className={"text-red-500"}>*</span>
+                </label>
+                {errors.label && (
+                    <span className={"text-sm text-red-500"}>
+                        {errors.label.message}
+                    </span>
+                )}
                 <input
-                    className={"border rounded w-full p-1"}
+                    className={
+                        "border rounded-lg w-full p-1 invalid:border-red-500"
+                    }
                     type="text"
+                    required={true}
+                    autoFocus
+                    aria-invalid={errors.label ? "true" : "false"}
                     placeholder="np. Promocje"
-                    {...register("label", { required: true })}
+                    {...register("label", {
+                        required: {
+                            value: true,
+                            message: "Podanie nazwy jest wymagane",
+                        },
+                    })}
                 />
             </div>
             <div>
-                <ThrashCan onClick={onCancel} />
+                <ThrashCan
+                    onClick={
+                        typeof onDelete === "function" ? onDelete : onCancel
+                    }
+                />
             </div>
             <div className="col-end-2">
                 <label htmlFor={"url"}>Link</label>
                 <input
-                    className={"border rounded w-full p-1"}
+                    className={
+                        "border rounded-lg w-full p-1 invalid:border-red-500"
+                    }
                     {...register("url")}
                     type="url"
+                    placeholder="🔍Wklej lub wyszukaj"
                 />
             </div>
             <div className={"flex gap-2 col-start-1"}>
                 <button
-                    className={"border rounded p-2"}
+                    className={
+                        "border rounded-lg p-2 hover:bg-zinc-100 font-medium"
+                    }
                     type={"button"}
                     onClick={onCancel}
                 >
                     Anuluj
                 </button>
-                <button className={"border rounded p-2"} type="submit">
-                    {isEditing ? 'Zapisz' : 'Dodaj'}
+                <button
+                    className={
+                        "border rounded-lg p-2 hover:bg-zinc-100 font-medium border-droplo-purple text-droplo-purple"
+                    }
+                    type="submit"
+                >
+                    {isEditing ? "Zapisz" : "Dodaj"}
                 </button>
             </div>
         </form>

@@ -49,7 +49,7 @@ export default function Home() {
     };
 
     return items.length > 0 ?
-            <div>
+            <div className={"bg-zinc-100 rounded-lg border"}>
                 <DndProvider
                     sensors={sensors}
                     handleDragEnd={handleDragEnd}
@@ -63,15 +63,18 @@ export default function Home() {
                         isRoot={true}
                     />
                     <button
+                        className={"border rounded-lg p-2 m-2 bg-white"}
                         onClick={() => setIsAdding((prevState) => !prevState)}
                     >
                         Dodaj pozycję menu
                     </button>
                     {isAdding && (
+                        <div className={"m-2"}>
                         <MenuItemForm
                             onCancel={() => setIsAdding(false)}
                             onSubmit={addItem}
                         />
+                        </div>
                     )}
                 </DndProvider>
             </div>

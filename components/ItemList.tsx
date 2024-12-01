@@ -10,17 +10,17 @@ import DndProvider from "@/components/DndProvider";
 
 function Actions({ onClickAdd, onClickDelete, onClickEdit }) {
     return (
-        <section className="ml-auto">
-            <button onClick={onClickDelete}>Usuń</button>
-            <button onClick={onClickEdit}>Edytuj</button>
-            <button type={"button"} onClick={onClickAdd}>
-                Dodaj
+        <section className="ml-auto border rounded-lg">
+            <button className={"border-r px-2 py-1 hover:bg-zinc-100"} onClick={onClickDelete}>Usuń</button>
+            <button className={"border-r px-2 py-1 hover:bg-zinc-100"} onClick={onClickEdit}>Edytuj</button>
+            <button className={"px-2 py-1 hover:bg-zinc-100"} type={"button"} onClick={onClickAdd}>
+                Dodaj pozycję menu
             </button>
         </section>
     );
 }
 
-function SortableItem({ item, removeItem, editItem }) {
+function SortableItem({ item, removeItem, editItem, roundTop }) {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: item.id });
 
@@ -35,6 +35,7 @@ function SortableItem({ item, removeItem, editItem }) {
                 item={item}
                 removeItem={removeItem}
                 editItem={editItem}
+                roundTop={roundTop}
                 {...attributes}
                 {...listeners}
             />
@@ -42,7 +43,7 @@ function SortableItem({ item, removeItem, editItem }) {
     );
 }
 
-function Item({ item, removeItem, editItem, ...rest }) {
+function Item({ item, removeItem, editItem, roundTop, ...rest }) {
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [subItems, setSubItems] = useState<MenuItem[]>([]);
@@ -70,19 +71,20 @@ function Item({ item, removeItem, editItem, ...rest }) {
     };
 
     return (
-        <section className="border">
+        <section className="bg-zinc-100">
             {isEditing ?
                 <MenuItemForm
                     onCancel={() => setIsEditing(false)}
+                    onDelete={() => removeItem(item.id)}
                     onSubmit={editItemAndResetForm}
                     item={item}
                     isEditing={isEditing}
                 />
-            :   <div className="flex">
+            :   <div className={ `flex bg-white border-b p-2 items-center gap-2${roundTop ? ' rounded-t-lg' : ''}` }>
                     <Drag {...rest} />
                     <div>
-                        <p>{item.label}</p>
-                        <p>{item.url}</p>
+                        <p className={"text-lg"}>{item.label}</p>
+                        <p className={"text-xs"}>{Boolean(item.url) ? item.url : '(brak linku)'}</p>
                     </div>
                     <Actions
                         onClickAdd={() => setIsAdding(true)}
@@ -105,10 +107,12 @@ function Item({ item, removeItem, editItem, ...rest }) {
                 />
             </DndProvider>
             {isAdding && (
+                <div className={"ml-4 m-2"}>
                 <MenuItemForm
                     onCancel={() => setIsAdding(false)}
                     onSubmit={addSubItem}
                 />
+                </div>
             )}
         </section>
     );
@@ -122,11 +126,12 @@ export default function ItemList({
     isRoot = false,
 }) {
     return (
-        <div className={isRoot ? "" : "ml-2"}>
-            {items.map((item) => (
+        <div className={isRoot ? "" : "ml-8"}>
+            {items.map((item, index) => (
                 <SortableItem
                     key={item.id}
                     item={item}
+                    roundTop={isRoot && index === 0}
                     removeItem={removeItem}
                     editItem={editItem}
                 />
