@@ -11,6 +11,9 @@ export default function SortableItem({
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: item.id });
 
+    if (transform) {
+        transform.scaleY = 1;
+    }
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
