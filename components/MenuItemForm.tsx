@@ -1,10 +1,15 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import ThrashCan from "@/components/icons/ThrashCan";
 
-type FormData = {
+export type FormData = {
     label: string;
     url: string;
 };
+
+let id = 0;
+function getId() {
+    return id++;
+}
 
 export default function MenuItemForm({ onCancel, onSubmit }) {
     const {
@@ -12,7 +17,7 @@ export default function MenuItemForm({ onCancel, onSubmit }) {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>();
-    const onFormSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+    const onFormSubmit: SubmitHandler<FormData> = (data) => onSubmit(data, getId())
 
     return (
         <form

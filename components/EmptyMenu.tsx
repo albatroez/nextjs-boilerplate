@@ -1,14 +1,14 @@
 import { useState } from "react";
 import MenuItemForm from "@/components/MenuItemForm";
 
-export default function EmptyMenu() {
+export default function EmptyMenu({addItem}) {
     const [isAdding, setIsAdding] = useState(false);
     const goBack = () => setIsAdding(false);
 
     return isAdding ?
             <MenuItemForm
                 onCancel={goBack}
-                onSubmit={() => undefined}
+                onSubmit={addItem}
             ></MenuItemForm>
         :   <section className={"grid justify-items-center"}>
                 <h1>Menu jest puste</h1>
