@@ -66,7 +66,7 @@ export default function MenuItemForm({ onCancel, onSubmit, isEditing, item = {} 
                     Anuluj
                 </button>
                 <button className={"border rounded p-2"} type="submit">
-                    Dodaj
+                    {isEditing ? 'Zapisz' : 'Dodaj'}
                 </button>
             </div>
         </form>

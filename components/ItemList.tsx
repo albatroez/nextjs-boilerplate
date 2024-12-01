@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import MenuItemForm, { FormData } from "@/components/MenuItemForm";
 import Drag from "@/components/icons/Drag";
@@ -20,24 +20,34 @@ function Item({ item, removeItem, editItem }) {
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [subItems, setSubItems] = useState<MenuItem[]>([]);
-    const addItem = (item: FormData, id: number) =>
+    const addSubItem = (item: FormData, id: number) => {
         setSubItems((prevState) => [...prevState, { ...item, id }]);
+        setIsAdding(false);
+    };
     const removeSubItem = (id: number) =>
         setSubItems((prevState) => prevState.filter((item) => item.id !== id));
+    const editSubItem = (updatedItem: MenuItem) => {
+        setSubItems((items) =>
+            items.map((item) => {
+                if (updatedItem.id === item.id) {
+                    return updatedItem;
+                }
+                return item;
+            })
+        );
+    };
 
-    const editSubItem = (updatedItem: MenuItem) => setSubItems((items) => items.map((item) => {
-        if (updatedItem.id === item.id) {
-            return updatedItem
-        }
-        return item;
-    }))
+    const editItemAndResetForm = (updatedItem) => {
+        editItem(updatedItem);
+        setIsEditing(false)
+    }
 
     return (
         <section className="border">
             {isEditing ?
                 <MenuItemForm
                     onCancel={() => setIsEditing(false)}
-                    onSubmit={editItem}
+                    onSubmit={editItemAndResetForm}
                     item={item}
                     isEditing={isEditing}
                 />
@@ -56,14 +66,14 @@ function Item({ item, removeItem, editItem }) {
             }
             <ItemList
                 items={subItems}
-                addItem={addItem}
+                addItem={addSubItem}
                 removeItem={removeSubItem}
                 editItem={editSubItem}
             />
             {isAdding && (
                 <MenuItemForm
                     onCancel={() => setIsAdding(false)}
-                    onSubmit={addItem}
+                    onSubmit={addSubItem}
                 />
             )}
         </section>
@@ -72,28 +82,20 @@ function Item({ item, removeItem, editItem }) {
 
 export default function ItemList({
     items,
-    addItem,
     removeItem,
     editItem,
     isRoot = false,
 }) {
-    const [isAdding, setIsAdding] = useState(false);
     return (
         <div className={isRoot ? "" : "ml-2"}>
             {items.map((item) => (
-                <Item key={item.id} item={item} removeItem={removeItem} editItem={editItem} />
-            ))}
-            {isRoot && (
-                <button onClick={() => setIsAdding((prevState) => !prevState)}>
-                    Dodaj pozycję menu
-                </button>
-            )}
-            {isAdding && (
-                <MenuItemForm
-                    onCancel={() => setIsAdding(false)}
-                    onSubmit={addItem}
+                <Item
+                    key={item.id}
+                    item={item}
+                    removeItem={removeItem}
+                    editItem={editItem}
                 />
-            )}
+            ))}
         </div>
     );
 }
