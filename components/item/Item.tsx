@@ -48,7 +48,7 @@ export default function Item({
                     isEditing={isEditing}
                 />
             :   <div
-                    className={`flex bg-white border-b p-2 items-center gap-2${roundTop ? " rounded-t-lg" : ""}`}
+                    className={`flex items-center border-b bg-white p-2 gap-2${roundTop ? "rounded-t-lg" : ""}`}
                 >
                     <Drag {...rest} />
                     <div>
@@ -76,7 +76,7 @@ export default function Item({
                 />
             </DndProvider>
             {isAdding && (
-                <div className={"ml-4 m-2"}>
+                <div className={"m-2 ml-4"}>
                     <MenuItemForm
                         onCancel={() => setIsAdding(false)}
                         onDelete={() => setIsAdding(false)}

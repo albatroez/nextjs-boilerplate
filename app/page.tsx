@@ -20,7 +20,7 @@ export default function Home() {
     const { addItem, editItem, removeItem } = useItems(setItems, setIsAdding);
 
     return items.length > 0 ?
-            <div className={"bg-zinc-100 rounded-lg border"}>
+            <div className={"rounded-lg border bg-zinc-100"}>
                 <DndProvider
                     sensors={sensors}
                     handleDragEnd={handleDragEnd}
@@ -33,7 +33,7 @@ export default function Home() {
                         isRoot={true}
                     />
                     <button
-                        className={"border rounded-lg p-2 m-2 bg-white"}
+                        className={"m-2 rounded-lg border bg-white p-2"}
                         onClick={() => setIsAdding((prevState) => !prevState)}
                     >
                         Dodaj pozycję menu

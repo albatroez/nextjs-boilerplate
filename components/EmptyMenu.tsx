@@ -16,7 +16,7 @@ export default function EmptyMenu({ addItem }: { addItem: AddItem }) {
             ></MenuItemForm>
         :   <section
                 className={
-                    "grid justify-items-center p-4 bg-zinc-100 rounded-lg"
+                    "grid justify-items-center rounded-lg bg-zinc-100 p-4"
                 }
             >
                 <h1 className={"text-xl font-bold"}>Menu jest puste</h1>
@@ -24,7 +24,7 @@ export default function EmptyMenu({ addItem }: { addItem: AddItem }) {
                     W tym menu nie ma jeszcze żadnych linków.
                 </p>
                 <button
-                    className="flex items-center gap-1 border text-white rounded-lg p-2 mt-4 bg-droplo-purple font-bold"
+                    className="mt-4 flex items-center gap-1 rounded-lg border bg-droplo-purple p-2 font-bold text-white"
                     onClick={() => setIsAdding(true)}
                 >
                     <AddCircle />

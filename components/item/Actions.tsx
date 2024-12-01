@@ -10,7 +10,7 @@ export default function Actions({
     onClickEdit,
 }: Props) {
     return (
-        <section className="ml-auto border rounded-lg">
+        <section className="ml-auto rounded-lg border">
             <button
                 className={"border-r px-2 py-1 hover:bg-zinc-100"}
                 onClick={onClickDelete}

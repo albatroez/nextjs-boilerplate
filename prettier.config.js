@@ -4,6 +4,7 @@
  */
 
 const config = {
+    plugins: ["prettier-plugin-tailwindcss"],
     tabWidth: 4,
     trailingComma: "es5",
     experimentalTernaries: true,

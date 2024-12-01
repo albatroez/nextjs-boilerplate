@@ -1,6 +1,6 @@
 export default function ThrashCan({ onClick }: { onClick: () => void }) {
     return (
-        <div className={"p-1 cursor-pointer"} onClick={onClick}>
+        <div className={"cursor-pointer p-1"} onClick={onClick}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"

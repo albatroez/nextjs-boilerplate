@@ -52,7 +52,7 @@ export default function MenuItemForm({
     return (
         <form
             className={
-                "grid grid-cols-menu-item gap-2 p-4 border rounded-lg bg-white"
+                "grid grid-cols-menu-item gap-2 rounded-lg border bg-white p-4"
             }
             onSubmit={handleSubmit(onFormSubmit)}
         >
@@ -61,7 +61,7 @@ export default function MenuItemForm({
                     Nazwa<span className={"text-red-500"}>*</span>
                     <input
                         className={
-                            "border rounded-lg w-full p-1 invalid:border-red-500"
+                            "w-full rounded-lg border p-1 invalid:border-red-500"
                         }
                         type="text"
                         required={true}
@@ -94,7 +94,7 @@ export default function MenuItemForm({
                     Link
                     <input
                         className={
-                            "border rounded-lg w-full p-1 invalid:border-red-500"
+                            "w-full rounded-lg border p-1 invalid:border-red-500"
                         }
                         {...register("url")}
                         type="url"
@@ -102,10 +102,10 @@ export default function MenuItemForm({
                     />
                 </label>
             </div>
-            <div className={"flex gap-2 col-start-1"}>
+            <div className={"col-start-1 flex gap-2"}>
                 <button
                     className={
-                        "border rounded-lg p-2 hover:bg-zinc-100 font-medium"
+                        "rounded-lg border p-2 font-medium hover:bg-zinc-100"
                     }
                     type={"button"}
                     onClick={onCancel}
@@ -114,7 +114,7 @@ export default function MenuItemForm({
                 </button>
                 <button
                     className={
-                        "border rounded-lg p-2 hover:bg-zinc-100 font-medium border-droplo-purple text-droplo-purple"
+                        "rounded-lg border border-droplo-purple p-2 font-medium text-droplo-purple hover:bg-zinc-100"
                     }
                     type="submit"
                 >

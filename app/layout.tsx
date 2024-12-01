@@ -17,7 +17,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${inter.className} antialiased`}>
-                <main className={"max-w-6xl p-2 mx-auto"}>{children}</main>
+                <main className={"mx-auto max-w-6xl p-2"}>{children}</main>
             </body>
         </html>
     );
