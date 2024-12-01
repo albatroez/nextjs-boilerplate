@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { AddItem, EditItem, MenuItem, RemoveItem } from "@/app/page";
+import { EditItem, MenuItem, RemoveItem } from "@/app/page";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import MenuItemForm from "@/components/MenuItemForm";
 import Drag from "@/components/icons/Drag";
 import Actions from "@/components/item/Actions";
 import DndProvider from "@/components/dnd/DndProvider";
 import ItemList from "@/components/ItemList";
+import useItems from "@/hooks/useItems";
 
 export type ItemProps = {
     item: MenuItem;
@@ -25,22 +26,11 @@ export default function Item({
     const [isEditing, setIsEditing] = useState(false);
     const [subItems, setSubItems] = useState<MenuItem[]>([]);
     const { sensors, handleDragEnd } = useDragAndDrop(setSubItems);
-    const addSubItem: AddItem = (item) => {
-        setSubItems((prevState) => [...prevState, item]);
-        setIsAdding(false);
-    };
-    const removeSubItem: RemoveItem = (id: number) =>
-        setSubItems((prevState) => prevState.filter((item) => item.id !== id));
-    const editSubItem: EditItem = (updatedItem: MenuItem) => {
-        setSubItems((items) =>
-            items.map((item) => {
-                if (updatedItem.id === item.id) {
-                    return updatedItem;
-                }
-                return item;
-            })
-        );
-    };
+    const {
+        addItem: addSubItem,
+        editItem: editSubItem,
+        removeItem: removeSubItem,
+    } = useItems(setSubItems, setIsAdding);
 
     const editItemAndResetForm: EditItem = (updatedItem) => {
         editItem(updatedItem);

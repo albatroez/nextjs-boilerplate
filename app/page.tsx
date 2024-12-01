@@ -6,6 +6,7 @@ import ItemList from "@/components/ItemList";
 import MenuItemForm, { FormData } from "@/components/MenuItemForm";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import DndProvider from "@/components/dnd/DndProvider";
+import useItems from "@/hooks/useItems";
 
 export type MenuItem = FormData & { id: number };
 export type RemoveItem = (id: number) => void;
@@ -16,23 +17,7 @@ export default function Home() {
     const [isAdding, setIsAdding] = useState(false);
     const [items, setItems] = useState<MenuItem[]>([]);
     const { sensors, handleDragEnd } = useDragAndDrop(setItems);
-    const addItem: AddItem = (item) => {
-        setItems((prevState) => [...prevState, item]);
-        setIsAdding(false);
-    };
-    const removeItem: RemoveItem = (id) =>
-        setItems((prevState) => prevState.filter((item) => item.id !== id));
-
-    const editItem: EditItem = (updatedItem) => {
-        setItems((items) =>
-            items.map((item) => {
-                if (updatedItem.id === item.id) {
-                    return updatedItem;
-                }
-                return item;
-            })
-        );
-    };
+    const { addItem, editItem, removeItem } = useItems(setItems, setIsAdding);
 
     return items.length > 0 ?
             <div className={"bg-zinc-100 rounded-lg border"}>
