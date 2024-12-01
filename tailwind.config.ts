@@ -12,6 +12,9 @@ export default {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
             },
+            gridTemplateColumns: {
+                "menu-item": "1fr 40px",
+            },
         },
     },
     plugins: [],

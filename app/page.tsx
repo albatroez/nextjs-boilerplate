@@ -1,5 +1,11 @@
-import Image from "next/image";
+"use client";
+
+import EmptyMenu from "@/components/EmptyMenu";
+import { useState } from "react";
+import ItemList from "@/components/ItemList";
 
 export default function Home() {
-    return <div>Hello</div>;
+    const [items, setItems] = useState([]);
+
+    return items.length > 0 ? <ItemList /> : <EmptyMenu />;
 }
