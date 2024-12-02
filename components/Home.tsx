@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import useItems from "@/hooks/useItems";
