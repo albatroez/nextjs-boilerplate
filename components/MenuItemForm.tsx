@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import ThrashCan from "@/components/icons/ThrashCan";
 import { useEffect } from "react";
-import { AddItem, MenuItem } from "@/app/page";
+import { AddItem, MenuItem } from "@/components/Home";
 import getId from "@/hooks/useIncrementalId";
 
 export type FormData = {

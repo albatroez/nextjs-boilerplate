@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { EditItem, MenuItem, RemoveItem } from "@/app/page";
 import { useDragAndDrop } from "@/hooks/useDragAndDrop";
 import MenuItemForm from "@/components/MenuItemForm";
 import Drag from "@/components/icons/Drag";
@@ -7,6 +6,7 @@ import Actions from "@/components/item/Actions";
 import DndProvider from "@/components/dnd/DndProvider";
 import ItemList from "@/components/ItemList";
 import useItems from "@/hooks/useItems";
+import { EditItem, MenuItem, RemoveItem } from "@/components/Home";
 
 type ItemProps = {
     item: MenuItem;

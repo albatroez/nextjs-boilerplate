@@ -1,7 +1,7 @@
 import { useState } from "react";
 import MenuItemForm from "@/components/MenuItemForm";
 import AddCircle from "@/components/icons/AddCircle";
-import { AddItem } from "@/app/page";
+import { AddItem } from "@/components/Home";
 
 export default function EmptyMenu({ addItem }: { addItem: AddItem }) {
     const [isAdding, setIsAdding] = useState(false);

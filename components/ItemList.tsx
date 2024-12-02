@@ -1,6 +1,6 @@
 import SortableItem from "@/components/dnd/SortableItem";
-import { EditItem, MenuItem, RemoveItem } from "@/app/page";
 import Item from "@/components/item/Item";
+import { EditItem, MenuItem, RemoveItem } from "@/components/Home";
 
 export default function ItemList({
     items,

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { AddItem, EditItem, MenuItem, RemoveItem } from "@/app/page";
+import { AddItem, EditItem, MenuItem, RemoveItem } from "@/components/Home";
 
 export default function useItems(
     setItems: Dispatch<SetStateAction<MenuItem[]>>,

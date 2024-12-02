@@ -10,7 +10,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { PropsWithChildren } from "react";
-import { MenuItem } from "@/app/page";
+import { MenuItem } from "@/components/Home";
 
 type Props = {
     sensors: SensorDescriptor<SensorOptions>[];
