@@ -1,15 +1,22 @@
 import { useSortable } from "@dnd-kit/sortable";
-import Item, { ItemProps } from "@/components/item/Item";
 import { CSS } from "@dnd-kit/utilities";
+import { ReactNode } from "react";
+import { DraggableAttributes } from "@dnd-kit/core";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
+type AdditionalProps = {
+    attributes: DraggableAttributes;
+    listeners: SyntheticListenerMap | undefined;
+};
 export default function SortableItem({
-    item,
-    removeItem,
-    editItem,
-    roundTop,
-}: ItemProps) {
+    id,
+    renderItem,
+}: {
+    id: number;
+    renderItem: ({ attributes, listeners }: AdditionalProps) => ReactNode;
+}) {
     const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: item.id });
+        useSortable({ id });
 
     if (transform) {
         transform.scaleY = 1;
@@ -21,14 +28,7 @@ export default function SortableItem({
 
     return (
         <div ref={setNodeRef} style={style}>
-            <Item
-                item={item}
-                removeItem={removeItem}
-                editItem={editItem}
-                roundTop={roundTop}
-                {...attributes}
-                {...listeners}
-            />
+            {renderItem({ attributes, listeners })}
         </div>
     );
 }

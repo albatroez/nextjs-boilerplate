@@ -1,5 +1,6 @@
 import SortableItem from "@/components/dnd/SortableItem";
 import { EditItem, MenuItem, RemoveItem } from "@/app/page";
+import Item from "@/components/item/Item";
 
 export default function ItemList({
     items,
@@ -17,10 +18,17 @@ export default function ItemList({
             {items.map((item, index) => (
                 <SortableItem
                     key={item.id}
-                    item={item}
-                    roundTop={isRoot && index === 0}
-                    removeItem={removeItem}
-                    editItem={editItem}
+                    id={item.id}
+                    renderItem={(props) => (
+                        <Item
+                            item={item}
+                            roundTop={isRoot && index === 0}
+                            removeItem={removeItem}
+                            editItem={editItem}
+                            {...props.listeners}
+                            {...props.attributes}
+                        />
+                    )}
                 />
             ))}
         </div>

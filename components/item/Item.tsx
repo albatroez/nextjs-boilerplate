@@ -8,7 +8,7 @@ import DndProvider from "@/components/dnd/DndProvider";
 import ItemList from "@/components/ItemList";
 import useItems from "@/hooks/useItems";
 
-export type ItemProps = {
+type ItemProps = {
     item: MenuItem;
     removeItem: RemoveItem;
     editItem: EditItem;
